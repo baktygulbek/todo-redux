@@ -1,12 +1,11 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { deleteTask } from "../store/taskSlice";
-import Card from "./ui/Card";
+import { checkboxTask, deleteTask } from "../store/taskSlice";
+import classes from "./TodoItem.module.css";
 
 const TodoItem = (props) => {
-  console.log(props);
   const dispatch = useDispatch();
-  const { title, date, id } = props.items;
+  const { title, date, id, complated } = props.items;
 
   const deleteHandler = () => {
     dispatch(
@@ -16,14 +15,24 @@ const TodoItem = (props) => {
     );
   };
 
+  const checkboxChange = () => {
+    dispatch(
+      checkboxTask({
+        id: id,
+        complated: !complated,
+      })
+    );
+  };
+
   return (
-    <Card>
-      <li>
+    <div className={classes.task}>
+      <li className={complated ? classes.line : ""}>
+        <input type={"checkbox"} id={id} onClick={checkboxChange} />
         <h4>{title}</h4>
         <h3>{date}</h3>
         <button onClick={deleteHandler}>delete</button>
       </li>
-    </Card>
+    </div>
   );
 };
 
